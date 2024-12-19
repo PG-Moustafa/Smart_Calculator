@@ -57,6 +57,9 @@ button:hover {
     border: none;
     background-color: rgb(30, 29, 29);
     border-radius: 10px;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
 }
 
 .row1 {
