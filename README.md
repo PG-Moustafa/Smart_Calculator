@@ -20,3 +20,5 @@ Steps:
 1. Start with the first operator *: 2 * 3 = 6.
 2. Add 9 + 6 = 15.
 Result: 15
+
+Live link to the website: (https://pg-moustafa.github.io/Smart_Calculator/)
