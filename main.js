@@ -77,7 +77,7 @@ function print_result () {
     display_result.innerHTML = result
 }
 
-// 
+// need implementation
 function calculate_infix_expression() {
 
 }
@@ -132,9 +132,50 @@ function calculate_prefix_expression() {
 
 }
 
-//
 function calculate_postfix_expression() {
+    let numbers = []
 
+    for (let i = 0; i < expression.length; i++) 
+    {
+        let element = expression[i]
+
+        if (typeof element === "number")
+            numbers.push(element)
+            
+        else {
+            let n1 = numbers.pop()
+            let n2 = numbers.pop()
+
+            if (n1 === undefined || n2 === undefined) {
+                window.alert("Invalid prefix expression.")
+                return
+            }
+              
+            let newResult
+            switch (element) {
+                case '+':
+                    newResult = n1 + n2
+                    break
+                case '-':
+                    newResult = n1 - n2
+                    break
+                case '*':
+                    newResult = n1 * n2
+                    break
+                case '/':
+                    if (n2 === 0) {
+                        window.alert("Division by zero is impossible!")
+                        return
+                    }
+                    newResult = n1 / n2
+                    break
+                default:
+                    throw new Error(`Unsupported operator: ${element}`)
+            }
+            numbers.push(newResult)
+        }
+    }
+    return numbers.pop()
 }
 
 
