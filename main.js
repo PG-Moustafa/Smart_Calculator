@@ -15,13 +15,13 @@ const plus = document.getElementById("plus")
 const minus = document.getElementById("minus")
 const times = document.getElementById("times")
 const divides = document.getElementById("divides")
-const equals = document.getElementById("equal")
+const equals = document.getElementById("equals")
 const clear = document.getElementById("clear")
 
 let expression = []
 let result = 0
 let display_result = document.getElementById("result")
-let choice = document.getElementById("choice")
+let choice
 
 function read_input() {
     zero.addEventListener("click", () => add_to_expression(0))
@@ -46,40 +46,35 @@ function read_input() {
 
 function add_to_expression (n) {
     expression.push(n)
-    let str = ""
-    for (element in expression) {
-        str += element
-    }
-    display_result.innerHTML = str
+    display_result.innerHTML = expression.join(" ")
 }
 
 function clear_expression() {
     expression = []
+    result = 0
     display_result.innerHTML = ""
 }
 
-function print_result () {
-    display_result.innerHTML = result
-    result = 0
-}
-
 function calculate_expression() {
+    choice = document.getElementById("choice").value
+
     if (choice == "Infix") 
     {
         result = calculate_infix_expression()
-        return
     } 
     else if (choice == "Prefix")
     {
         result = calculate_prefix_expression()
-        print_result()
-        return
     } 
     else if (choice == "Postfix") 
     {
         result = calculate_postfix_expression()
-        return
     }
+    print_result()
+}
+
+function print_result () {
+    display_result.innerHTML = result
 }
 
 // 
@@ -87,46 +82,53 @@ function calculate_infix_expression() {
 
 }
 
-///
 function calculate_prefix_expression() {
-    let result = 0
     let numbers = []
 
-    for (element in expression) {
-        if (0 <= element <= 9)
+    for (let i = expression.length -1; i >= 0; i--) {
+
+        let element = expression[i]
+
+        if (typeof element === "number")
             numbers.push(element)
 
         else 
         {
-            n1 = numbers.pop()
-            n2 = numbers.pop()
+            let n1 = numbers.pop()
+            let n2 = numbers.pop()
 
+            if (n1 === undefined || n2 === undefined) {
+                window.alert("Invalid prefix expression.")
+                return
+            }
+            
+            let newResult
             switch (element) {
                 case '+':
-                    if (n2 != null)
-                        result += (n1+n2)
-                    else
-                        result += (n1)
+                    newResult = n1 + n2
+                    break
                 case '-':
-                    if (n2 != null)
-                        result += (n1-n2)
-                    else
-                        result -= (n1)
+                    newResult = n1 - n2
+                    break
                 case '*':
-                    if (n2 != null)
-                        result += (n1*n2)
-                    else
-                        result *= (n1)
+                    newResult = n1 * n2
+                    break
                 case '/':
-                    if (n2 != null)
-                        result += (n1/n2)
-                    else
-                        result /= (n1)
+                    if (n2 === 0) {
+                        window.alert("Division by zero is impossible!")
+                        return
+                    }
+                    newResult = n1 / n2
+                    break
+                default:
+                    throw new Error(`Unsupported operator: ${element}`)
+                
             }
+            numbers.push(newResult)
         }
-        
     }
-    return result
+
+    return numbers.pop()
 
 }
 
